@@ -1,5 +1,5 @@
-var CACHE = 'hierroxp-v11';
-var ASSETS = ['./', 'index.html', 'style.css', 'app.js', 'manifest.json', 'icon.svg'];
+var CACHE = 'hierroxp-v12';
+var ASSETS = ['./', 'index.html', 'style.css', 'app.js', 'i18n.js', 'manifest.json', 'icon.svg'];
 
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(ASSETS); }));

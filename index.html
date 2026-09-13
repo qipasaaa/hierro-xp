@@ -17,54 +17,136 @@
 
   <!-- ONBOARDING -->
   <section class="screen onboard" id="screen-onboard">
-    <div class="onboard-eyebrow">Hierro XP</div>
-    <h1>Entrená donde estés.<br>Subí de nivel.</h1>
-    <p>Con mancuernas o sin nada de equipo. Calentamiento guiado para no lesionarte, rutinas para cualquier nivel, y un check-in diario para que la app se adapte a cómo estás.</p>
-
-    <div class="field">
-      <label for="nameInput">¿Cómo te llamamos?</label>
-      <input type="text" id="nameInput" placeholder="Tu nombre" maxlength="20" autocomplete="given-name">
+    <div class="onboard-progress" id="onboardProgress">
+      <span class="dot active" data-step="0"></span>
+      <span class="dot" data-step="1"></span>
+      <span class="dot" data-step="2"></span>
+      <span class="dot" data-step="3"></span>
+      <span class="dot" data-step="4"></span>
+      <span class="dot" data-step="5"></span>
+      <span class="dot" data-step="6"></span>
     </div>
 
-    <div class="field">
-      <label>Equipo disponible</label>
-      <div class="chip-choice" id="equipChoice">
-        <button type="button" data-val="mancuernas" class="active">Mancuernas</button>
-        <button type="button" data-val="bodyweight">Sin equipo / bandas</button>
+    <div class="onboard-steps" id="onboardSteps">
+
+      <!-- Step 0: Welcome -->
+      <div class="onboard-step" data-step="0">
+        <div class="onboard-icon">🏋️</div>
+        <div class="onboard-eyebrow" data-i18n="ob_eyebrow">Hierro XP</div>
+        <h1 data-i18n="ob_title">Entrena donde estés.<br>Sube de nivel.</h1>
+        <p data-i18n="ob_desc">Con mancuernas o sin nada de equipo. Calentamiento guiado, rutinas para cualquier nivel, y un check-in diario para que la app se adapte a cómo estás.</p>
+        <button class="btn-primary ob-next" data-i18n="ob_start">Empezar</button>
+        <button class="btn-ghost ob-lang-open" id="langOpenBtn" data-i18n="ob_language">🌐 Idioma: Español</button>
       </div>
-    </div>
 
-    <div class="field">
-      <label>¿En qué rango de edad estás?</label>
-      <div class="chip-choice" id="ageChoice">
-        <button type="button" data-val="18-29" class="active">18 a 29</button>
-        <button type="button" data-val="30-49">30 a 49</button>
-        <button type="button" data-val="50+">50 o más</button>
+      <!-- Step 1: Name -->
+      <div class="onboard-step" data-step="1" hidden>
+        <div class="onboard-icon">👋</div>
+        <h2 data-i18n="ob_name_title">¿Cómo te llamamos?</h2>
+        <p class="onboard-step-sub" data-i18n="ob_name_sub">Así te vamos a saludar dentro de la app.</p>
+        <div class="field">
+          <input type="text" id="nameInput" data-i18n-placeholder="ob_name_placeholder" placeholder="Tu nombre" maxlength="20" autocomplete="given-name">
+        </div>
+        <div class="onboard-nav">
+          <button class="btn-ghost ob-back" data-i18n="ob_back">← Atrás</button>
+          <button class="btn-primary ob-next" id="nameNextBtn" data-i18n="ob_continue">Continuar</button>
+        </div>
       </div>
-      <p class="field-hint">Hierro XP es para mayores de 18 años.</p>
-    </div>
 
-    <div class="field">
-      <label>¿Cuál es tu experiencia entrenando?</label>
-      <p class="field-hint">Si no sabés por dónde empezar, elegí Principiante — no pasa nada.</p>
-      <div class="chip-choice" id="expChoice">
-        <button type="button" data-val="principiante" class="active">Recién empiezo</button>
-        <button type="button" data-val="intermedio">Ya entreno hace rato</button>
-        <button type="button" data-val="avanzado">Avanzado</button>
+      <!-- Step 2: Age -->
+      <div class="onboard-step" data-step="2" hidden>
+        <div class="onboard-icon">🎂</div>
+        <h2 data-i18n="ob_age_title">¿En qué rango de edad estás?</h2>
+        <p class="onboard-step-sub" data-i18n="ob_age_sub">Hierro XP es para mayores de 18 años.</p>
+        <div class="chip-choice chip-choice-big" id="ageChoice">
+          <button type="button" data-val="18-29" class="active" data-i18n="age_18_29">18 a 29</button>
+          <button type="button" data-val="30-49" data-i18n="age_30_49">30 a 49</button>
+          <button type="button" data-val="50+" data-i18n="age_50">50 o más</button>
+        </div>
+        <div class="onboard-nav">
+          <button class="btn-ghost ob-back" data-i18n="ob_back">← Atrás</button>
+          <button class="btn-primary ob-next" data-i18n="ob_continue">Continuar</button>
+        </div>
       </div>
-    </div>
 
-    <div class="field">
-      <label>Estilo visual de la app</label>
-      <div class="chip-choice" id="visualChoice">
-        <button type="button" data-val="masculino" class="active">Hombre</button>
-        <button type="button" data-val="femenino">Mujer</button>
-        <button type="button" data-val="neutral">Prefiero no decir</button>
+      <!-- Step 3: Equipment -->
+      <div class="onboard-step" data-step="3" hidden>
+        <div class="onboard-icon">🏠</div>
+        <h2 data-i18n="ob_equip_title">¿Con qué equipo contás?</h2>
+        <p class="onboard-step-sub" data-i18n="ob_equip_sub">Vas a ver rutinas armadas para esto.</p>
+        <div class="chip-choice chip-choice-big" id="equipChoice">
+          <button type="button" data-val="mancuernas" class="active" data-i18n="equip_dumbbells">Mancuernas</button>
+          <button type="button" data-val="bodyweight" data-i18n="equip_none">Sin equipo / bandas</button>
+        </div>
+        <div class="onboard-nav">
+          <button class="btn-ghost ob-back" data-i18n="ob_back">← Atrás</button>
+          <button class="btn-primary ob-next" data-i18n="ob_continue">Continuar</button>
+        </div>
       </div>
-    </div>
 
-    <button class="btn-primary" id="startBtn">Empezar</button>
+      <!-- Step 4: Experience -->
+      <div class="onboard-step" data-step="4" hidden>
+        <div class="onboard-icon">📈</div>
+        <h2 data-i18n="ob_exp_title">¿Cuál es tu experiencia entrenando?</h2>
+        <p class="onboard-step-sub" data-i18n="ob_exp_sub">Si no sabés por dónde empezar, elegí Principiante. No pasa nada.</p>
+        <div class="chip-choice chip-choice-big" id="expChoice">
+          <button type="button" data-val="principiante" class="active" data-i18n="exp_beginner">Recién empiezo</button>
+          <button type="button" data-val="intermedio" data-i18n="exp_intermediate">Ya entreno hace tiempo</button>
+          <button type="button" data-val="avanzado" data-i18n="exp_advanced">Avanzado</button>
+        </div>
+        <div class="onboard-nav">
+          <button class="btn-ghost ob-back" data-i18n="ob_back">← Atrás</button>
+          <button class="btn-primary ob-next" data-i18n="ob_continue">Continuar</button>
+        </div>
+      </div>
+
+      <!-- Step 5: Visual style -->
+      <div class="onboard-step" data-step="5" hidden>
+        <div class="onboard-icon">🎨</div>
+        <h2 data-i18n="ob_visual_title">Estilo visual de la app</h2>
+        <p class="onboard-step-sub" data-i18n="ob_visual_sub">Elegí el que más te guste — lo podés cambiar cuando quieras.</p>
+        <div class="chip-choice chip-choice-big" id="visualChoice">
+          <button type="button" data-val="masculino" class="active" data-i18n="visual_male">Hombre</button>
+          <button type="button" data-val="femenino" data-i18n="visual_female">Mujer</button>
+          <button type="button" data-val="neutral" data-i18n="visual_neutral">Prefiero no decir</button>
+        </div>
+        <div class="onboard-nav">
+          <button class="btn-ghost ob-back" data-i18n="ob_back">← Atrás</button>
+          <button class="btn-primary ob-next" data-i18n="ob_continue">Continuar</button>
+        </div>
+      </div>
+
+      <!-- Step 6: Summary -->
+      <div class="onboard-step" data-step="6" hidden>
+        <div class="onboard-icon">✅</div>
+        <h2 data-i18n="ob_summary_title">Todo listo</h2>
+        <p class="onboard-step-sub" id="obSummaryText"></p>
+        <div class="onboard-nav">
+          <button class="btn-ghost ob-back" data-i18n="ob_back">← Atrás</button>
+          <button class="btn-primary" id="startBtn" data-i18n="ob_finish">Empezar a entrenar</button>
+        </div>
+      </div>
+
+    </div>
   </section>
+
+  <!-- LANGUAGE PICKER MODAL -->
+  <div class="lang-modal" id="langModal" hidden>
+    <div class="lang-sheet">
+      <div class="lang-sheet-title" data-i18n="lang_pick">Elegí tu idioma</div>
+      <div class="lang-list" id="langList">
+        <button type="button" data-lang="es">Español</button>
+        <button type="button" data-lang="en">English</button>
+        <button type="button" data-lang="fr">Français</button>
+        <button type="button" data-lang="it">Italiano</button>
+        <button type="button" data-lang="pt">Português</button>
+        <button type="button" data-lang="zh">中文</button>
+        <button type="button" data-lang="ja">日本語</button>
+        <button type="button" data-lang="ko">한국어</button>
+      </div>
+      <button class="btn-ghost" id="langCloseBtn" data-i18n="lang_close">Cerrar</button>
+    </div>
+  </div>
 
   <!-- TOP BAR (shown after onboarding) -->
   <div class="topbar" id="topbar" hidden>
@@ -75,7 +157,7 @@
   <!-- HOME -->
   <section class="screen" id="screen-home" hidden>
     <h2 class="section-title" id="homeGreeting">Hola</h2>
-    <p class="section-sub" id="homeSub">Elegí tu rutina de hoy.</p>
+    <p class="section-sub" data-i18n="home_sub">Elige tu rutina de hoy.</p>
 
     <div class="tip-banner" id="dailyTipCard"></div>
     <div class="tip-banner" id="beginnerTip" hidden></div>
@@ -84,25 +166,25 @@
 
     <!-- Check-in (shown once per day) -->
     <div class="checkin-card" id="checkinCard" hidden>
-      <span class="checkin-title">¿Cómo te sentís hoy?</span>
+      <span class="checkin-title" data-i18n="checkin_title">¿Cómo te sientes hoy?</span>
       <div class="checkin-row">
-        <span class="field-label">Energía física</span>
+        <span class="field-label" data-i18n="checkin_energy">Energía física</span>
         <div class="chip-choice" id="energyChoice">
-          <button type="button" data-val="bajo">Baja</button>
-          <button type="button" data-val="medio">Media</button>
-          <button type="button" data-val="alto">Alta</button>
+          <button type="button" data-val="bajo" data-i18n="energy_low">Baja</button>
+          <button type="button" data-val="medio" data-i18n="energy_mid">Media</button>
+          <button type="button" data-val="alto" data-i18n="energy_high">Alta</button>
         </div>
       </div>
       <div class="checkin-row">
-        <span class="field-label">Estado de ánimo</span>
+        <span class="field-label" data-i18n="checkin_mood">Estado de ánimo</span>
         <div class="chip-choice" id="moodChoice">
-          <button type="button" data-val="motivado">Motivado/a</button>
-          <button type="button" data-val="bien">Bien</button>
-          <button type="button" data-val="cansado">Cansado/a</button>
-          <button type="button" data-val="estresado">Estresado/a</button>
+          <button type="button" data-val="motivado" data-i18n="mood_motivated">Motivado/a</button>
+          <button type="button" data-val="bien" data-i18n="mood_good">Bien</button>
+          <button type="button" data-val="cansado" data-i18n="mood_tired">Cansado/a</button>
+          <button type="button" data-val="estresado" data-i18n="mood_stressed">Estresado/a</button>
         </div>
       </div>
-      <button class="btn-primary" id="saveCheckinBtn">Guardar</button>
+      <button class="btn-primary" id="saveCheckinBtn" data-i18n="save">Guardar</button>
     </div>
     <div class="checkin-adapt" id="checkinAdapt" hidden></div>
 
@@ -110,28 +192,28 @@
 
     <div class="water-card">
       <div class="water-row">
-        <span class="xp-label">💧 Agua de hoy</span>
+        <span class="xp-label" data-i18n="water_today">💧 Agua de hoy</span>
         <span class="xp-value" id="waterText">0 / 8 vasos</span>
       </div>
       <div class="bar-track"><div class="bar-fill water-fill" id="waterBarFill" style="width:0%"></div></div>
-      <button class="btn-ghost" id="waterAddBtn" style="align-self:flex-start">+1 vaso</button>
+      <button class="btn-ghost" id="waterAddBtn" style="align-self:flex-start" data-i18n="water_add">+1 vaso</button>
     </div>
 
     <div class="xp-card">
       <div class="xp-row">
-        <span class="xp-label">Progreso de nivel</span>
+        <span class="xp-label" data-i18n="level_progress">Progreso de nivel</span>
         <span class="xp-value" id="xpText">0 / 100 XP</span>
       </div>
       <div class="bar-track"><div class="bar-fill" id="xpBarFill" style="width:0%"></div></div>
     </div>
 
     <div class="stat-row">
-      <div class="stat-tile" id="streakTile"><span class="stat-num flame" id="streakNum">0</span><span class="stat-cap">Racha</span></div>
-      <div class="stat-tile"><span class="stat-num xp-color" id="levelNum">1</span><span class="stat-cap">Nivel</span></div>
-      <div class="stat-tile"><span class="stat-num gold-color" id="badgeNum">0</span><span class="stat-cap">Medallas</span></div>
+      <div class="stat-tile" id="streakTile"><span class="stat-num flame" id="streakNum">0</span><span class="stat-cap" data-i18n="stat_streak">Racha</span></div>
+      <div class="stat-tile"><span class="stat-num xp-color" id="levelNum">1</span><span class="stat-cap" data-i18n="stat_level">Nivel</span></div>
+      <div class="stat-tile"><span class="stat-num gold-color" id="badgeNum">0</span><span class="stat-cap" data-i18n="stat_badges">Medallas</span></div>
     </div>
 
-    <h3 class="section-title" style="font-size:17px">Rutinas</h3>
+    <h3 class="section-title" style="font-size:17px" data-i18n="routines_title">Rutinas</h3>
     <div class="routine-list" id="routineList"></div>
   </section>
 
@@ -141,8 +223,11 @@
     <p class="section-sub" id="workoutFocus"></p>
 
     <div class="hr-widget" id="hrWidget">
-      <span id="hrReading">❤️ -- BPM</span>
-      <button class="btn-ghost" id="hrConnectBtn">Conectar smartwatch</button>
+      <div class="hr-widget-row">
+        <span id="hrReading">❤️ -- BPM</span>
+        <button class="btn-ghost" id="hrConnectBtn" data-i18n="hr_connect">Conectar smartwatch</button>
+      </div>
+      <p class="field-hint" id="hrNote" data-i18n="hr_note">Compatible con Garmin, Polar, Wahoo y otros que transmiten ritmo cardíaco estándar. Los relojes Xiaomi/Mi Band no son compatibles: Xiaomi bloquea ese dato para apps externas.</p>
     </div>
 
     <div class="ring-wrap">
@@ -163,75 +248,75 @@
     </div>
     <div class="rest-controls">
       <button class="btn-ghost" id="restMinus">−15s</button>
-      <button class="btn-primary" id="restToggle" style="padding:11px 22px;">Iniciar descanso</button>
+      <button class="btn-primary" id="restToggle" style="padding:11px 22px;" data-i18n="rest_start">Iniciar descanso</button>
       <button class="btn-ghost" id="restPlus">+15s</button>
     </div>
-    <p class="disclaimer" style="text-align:center">💧 Acordate de tomar agua entre series.</p>
+    <p class="disclaimer" style="text-align:center" data-i18n="water_reminder">💧 Acuérdate de tomar agua entre series.</p>
 
     <div class="exercise-list" id="exerciseList"></div>
 
-    <button class="btn-primary" id="finishRoutineBtn">Terminar rutina</button>
-    <button class="btn-ghost" id="backHomeBtn">← Volver al inicio</button>
+    <button class="btn-primary" id="finishRoutineBtn" data-i18n="finish_routine">Terminar rutina</button>
+    <button class="btn-ghost" id="backHomeBtn" data-i18n="back_home">← Volver al inicio</button>
   </section>
 
   <!-- MOBILITY -->
   <section class="screen" id="screen-mobility" hidden>
-    <h2 class="section-title">Chequeo de movilidad</h2>
-    <p class="section-sub">Probá cada postura y marcá si sentís molestia o tensión desigual entre lados. No es un diagnóstico médico — es una guía para saber dónde estirar más.</p>
+    <h2 class="section-title" data-i18n="mobility_title">Chequeo de movilidad</h2>
+    <p class="section-sub" data-i18n="mobility_desc">Prueba cada postura y marca si sientes molestia o tensión desigual entre lados. No es un diagnóstico médico — es una guía para saber dónde estirar más.</p>
     <div id="poseList"></div>
-    <button class="btn-primary" id="checkMobilityBtn">Ver resultado</button>
+    <button class="btn-primary" id="checkMobilityBtn" data-i18n="mobility_check">Ver resultado</button>
     <div class="result-card" id="mobilityResult" hidden></div>
-    <p class="disclaimer">Si el dolor es fuerte o persiste, consultá con un kinesiólogo o profesional de salud.</p>
+    <p class="disclaimer" data-i18n="mobility_disclaimer">Si el dolor es fuerte o persiste, consulta con un kinesiólogo o profesional de salud.</p>
   </section>
 
   <!-- PROGRESS -->
   <section class="screen" id="screen-progress" hidden>
-    <h2 class="section-title">Tu progreso</h2>
+    <h2 class="section-title" data-i18n="progress_title">Tu progreso</h2>
     <div class="xp-card">
-      <div class="xp-row"><span class="xp-label">XP los últimos 7 días</span></div>
+      <div class="xp-row"><span class="xp-label" data-i18n="xp_last7">XP los últimos 7 días</span></div>
       <div class="chart" id="xpChart"></div>
       <div class="chart-labels" id="xpChartLabels"></div>
     </div>
-    <h3 class="section-title" style="font-size:17px">Medallas</h3>
+    <h3 class="section-title" style="font-size:17px" data-i18n="badges_title">Medallas</h3>
     <div class="badge-grid" id="badgeGrid"></div>
   </section>
 
   <!-- PREMIUM -->
   <section class="screen" id="screen-premium" hidden>
-    <h2 class="section-title">Hierro XP Premium</h2>
-    <p class="section-sub">Desbloqueá todas las rutinas, chequeos ilimitados y el Jefe Semanal.</p>
+    <h2 class="section-title" data-i18n="premium_title">Hierro XP Premium</h2>
+    <p class="section-sub" data-i18n="premium_sub">Desbloquea todas las rutinas, chequeos ilimitados y el Jefe Semanal.</p>
 
     <div class="why-premium">
-      <div class="why-item"><span class="why-icon">🎯</span><span>Progresión guiada para no estancarte — el problema #1 de entrenar solo, según todos los estudios que revisamos.</span></div>
-      <div class="why-item"><span class="why-icon">🧩</span><span>Rutinas ilimitadas de calistenia y mancuernas, para no aburrirte entrenando siempre lo mismo.</span></div>
-      <div class="why-item"><span class="why-icon">🩹</span><span>Chequeos de movilidad sin límite — la mejor forma de anticipar lesiones antes de que aparezcan.</span></div>
-      <div class="why-item"><span class="why-icon">👑</span><span>Jefe Semanal y modo avanzado, para cuando ya no te alcanza con lo básico.</span></div>
+      <div class="why-item"><span class="why-icon">🎯</span><span data-i18n="why_1">Progresión guiada para no estancarte — el problema #1 de entrenar solo, según todos los estudios que revisamos.</span></div>
+      <div class="why-item"><span class="why-icon">🧩</span><span data-i18n="why_2">Rutinas ilimitadas de calistenia y mancuernas, para no aburrirte entrenando siempre lo mismo.</span></div>
+      <div class="why-item"><span class="why-icon">🩹</span><span data-i18n="why_3">Chequeos de movilidad sin límite — la mejor forma de anticipar lesiones antes de que aparezcan.</span></div>
+      <div class="why-item"><span class="why-icon">👑</span><span data-i18n="why_4">Jefe Semanal y modo avanzado, para cuando ya no te alcance con lo básico.</span></div>
     </div>
 
     <div class="plan-card featured">
-      <div class="plan-head"><span class="plan-name">Anual</span><span class="plan-price">$29.990 CLP/año</span></div>
+      <div class="plan-head"><span class="plan-name" data-i18n="plan_annual">Anual</span><span class="plan-price">$29.990 CLP/año</span></div>
       <ul class="feature-list">
-        <li>Equivale a $2.499/mes — ahorrás 50%</li>
-        <li>Todas las rutinas, sin límite</li>
-        <li>Chequeos de movilidad ilimitados</li>
-        <li>Jefe Semanal desbloqueado</li>
-        <li>Sin anuncios</li>
+        <li data-i18n="plan_annual_equiv">Equivale a $2.499/mes — ahorras 50%</li>
+        <li data-i18n="plan_all_routines">Todas las rutinas, sin límite</li>
+        <li data-i18n="plan_unlimited_mobility">Chequeos de movilidad ilimitados</li>
+        <li data-i18n="plan_boss">Jefe Semanal desbloqueado</li>
+        <li data-i18n="plan_no_ads">Sin anuncios</li>
       </ul>
-      <button class="btn-primary" id="premiumYearBtn">Ver plan anual</button>
+      <button class="btn-primary" id="premiumYearBtn" data-i18n="plan_view_annual">Ver plan anual</button>
     </div>
 
     <div class="plan-card">
-      <div class="plan-head"><span class="plan-name">Mensual</span><span class="plan-price">$4.990 CLP/mes</span></div>
+      <div class="plan-head"><span class="plan-name" data-i18n="plan_monthly">Mensual</span><span class="plan-price">$4.990 CLP/mes</span></div>
       <ul class="feature-list">
-        <li>Todas las rutinas, sin límite</li>
-        <li>Chequeos de movilidad ilimitados</li>
-        <li>Jefe Semanal desbloqueado</li>
-        <li class="no">Precio mensual completo</li>
+        <li data-i18n="plan_all_routines">Todas las rutinas, sin límite</li>
+        <li data-i18n="plan_unlimited_mobility">Chequeos de movilidad ilimitados</li>
+        <li data-i18n="plan_boss">Jefe Semanal desbloqueado</li>
+        <li class="no" data-i18n="plan_full_price">Precio mensual completo</li>
       </ul>
-      <button class="btn-ghost" id="premiumMonthBtn">Ver plan mensual</button>
+      <button class="btn-ghost" id="premiumMonthBtn" data-i18n="plan_view_monthly">Ver plan mensual</button>
     </div>
 
-    <div class="note-box" id="premiumNote">Los pagos se procesan por Google Play Billing una vez publicada la app — todavía no hay cobro real activo en esta versión de prueba.</div>
+    <div class="note-box" id="premiumNote" data-i18n="premium_note">Los pagos se procesan por Google Play Billing una vez publicada la app — todavía no hay cobro real activo en esta versión de prueba.</div>
   </section>
 
   <!-- PROFILE -->
@@ -246,53 +331,57 @@
 
     <div class="xp-card">
       <div class="stat-row" style="grid-template-columns:repeat(4,1fr)">
-        <div class="stat-tile"><span class="stat-num" id="profXp">0</span><span class="stat-cap">XP total</span></div>
-        <div class="stat-tile"><span class="stat-num xp-color" id="profLevel">1</span><span class="stat-cap">Nivel</span></div>
-        <div class="stat-tile"><span class="stat-num flame" id="profStreak">0</span><span class="stat-cap">Racha</span></div>
-        <div class="stat-tile"><span class="stat-num gold-color" id="profBadges">0</span><span class="stat-cap">Medallas</span></div>
+        <div class="stat-tile"><span class="stat-num" id="profXp">0</span><span class="stat-cap" data-i18n="stat_xp_total">XP total</span></div>
+        <div class="stat-tile"><span class="stat-num xp-color" id="profLevel">1</span><span class="stat-cap" data-i18n="stat_level">Nivel</span></div>
+        <div class="stat-tile"><span class="stat-num flame" id="profStreak">0</span><span class="stat-cap" data-i18n="stat_streak">Racha</span></div>
+        <div class="stat-tile"><span class="stat-num gold-color" id="profBadges">0</span><span class="stat-cap" data-i18n="stat_badges">Medallas</span></div>
       </div>
     </div>
 
     <div class="edit-card">
       <div class="edit-block">
-        <span class="field-label">Nombre</span>
+        <span class="field-label" data-i18n="profile_name">Nombre</span>
         <input type="text" id="profNameInput" class="field" style="font-family:var(--font-body);font-size:15px;padding:11px 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface-2);color:var(--text)" maxlength="20">
       </div>
       <div class="edit-block">
-        <span class="field-label">Rango de edad</span>
+        <span class="field-label" data-i18n="profile_age">Rango de edad</span>
         <div class="chip-choice" id="profAgeChoice">
-          <button type="button" data-val="18-29">18 a 29</button>
-          <button type="button" data-val="30-49">30 a 49</button>
-          <button type="button" data-val="50+">50 o más</button>
+          <button type="button" data-val="18-29" data-i18n="age_18_29">18 a 29</button>
+          <button type="button" data-val="30-49" data-i18n="age_30_49">30 a 49</button>
+          <button type="button" data-val="50+" data-i18n="age_50">50 o más</button>
         </div>
       </div>
       <div class="edit-block">
-        <span class="field-label">Equipo disponible</span>
+        <span class="field-label" data-i18n="profile_equip">Equipo disponible</span>
         <div class="chip-choice" id="profEquipChoice">
-          <button type="button" data-val="mancuernas">Mancuernas</button>
-          <button type="button" data-val="bodyweight">Sin equipo / bandas</button>
+          <button type="button" data-val="mancuernas" data-i18n="equip_dumbbells">Mancuernas</button>
+          <button type="button" data-val="bodyweight" data-i18n="equip_none">Sin equipo / bandas</button>
         </div>
       </div>
       <div class="edit-block">
-        <span class="field-label">Experiencia</span>
+        <span class="field-label" data-i18n="profile_exp">Experiencia</span>
         <div class="chip-choice" id="profExpChoice">
-          <button type="button" data-val="principiante">Recién empiezo</button>
-          <button type="button" data-val="intermedio">Hace rato</button>
-          <button type="button" data-val="avanzado">Avanzado</button>
+          <button type="button" data-val="principiante" data-i18n="exp_beginner">Recién empiezo</button>
+          <button type="button" data-val="intermedio" data-i18n="exp_intermediate_short">Hace tiempo</button>
+          <button type="button" data-val="avanzado" data-i18n="exp_advanced">Avanzado</button>
         </div>
       </div>
       <div class="edit-block">
-        <span class="field-label">Estilo visual</span>
+        <span class="field-label" data-i18n="profile_visual">Estilo visual</span>
         <div class="chip-choice" id="profVisualChoice">
-          <button type="button" data-val="masculino">Hombre</button>
-          <button type="button" data-val="femenino">Mujer</button>
-          <button type="button" data-val="neutral">Prefiero no decir</button>
+          <button type="button" data-val="masculino" data-i18n="visual_male">Hombre</button>
+          <button type="button" data-val="femenino" data-i18n="visual_female">Mujer</button>
+          <button type="button" data-val="neutral" data-i18n="visual_neutral">Prefiero no decir</button>
         </div>
       </div>
-      <button class="btn-primary" id="saveProfileBtn">Guardar cambios</button>
+      <div class="edit-block">
+        <span class="field-label" data-i18n="profile_language">Idioma</span>
+        <button class="btn-ghost ob-lang-open" id="profileLangBtn">🌐 Español</button>
+      </div>
+      <button class="btn-primary" id="saveProfileBtn" data-i18n="profile_save">Guardar cambios</button>
     </div>
 
-    <div class="edit-card">
+    <div class="edit-card" id="cycleCard">
       <div class="edit-block">
         <span class="field-label">Registro de ciclo (opcional)</span>
         <p class="field-hint">100% privado: se guarda solo en este teléfono. Hierro XP no tiene servidor, así que esta información nunca se sube ni se comparte a ningún lado. No cambia tus rutinas automáticamente — la ciencia sobre el efecto del ciclo en el rendimiento todavía no es concluyente. Es solo para tu propio registro, si te sirve.</p>
@@ -315,22 +404,23 @@
       </div>
     </div>
 
-    <button class="btn-danger" id="resetProgressBtn">Reiniciar todo mi progreso</button>
+    <button class="btn-danger" id="resetProgressBtn" data-i18n="reset_progress">Reiniciar todo mi progreso</button>
   </section>
 
   <!-- TAB BAR -->
   <nav class="tabbar" id="tabbar" hidden>
-    <button class="tab-btn active" data-screen="home"><span class="tab-icon">🏠</span>Inicio</button>
-    <button class="tab-btn" data-screen="workout"><span class="tab-icon">⏱️</span>Entreno</button>
-    <button class="tab-btn" data-screen="mobility"><span class="tab-icon">🧘</span>Movilidad</button>
-    <button class="tab-btn" data-screen="progress"><span class="tab-icon">📈</span>Progreso</button>
-    <button class="tab-btn" data-screen="premium"><span class="tab-icon">👑</span>Premium</button>
-    <button class="tab-btn" data-screen="profile"><span class="tab-icon">👤</span>Perfil</button>
+    <button class="tab-btn active" data-screen="home"><span class="tab-icon">🏠</span><span data-i18n="tab_home">Inicio</span></button>
+    <button class="tab-btn" data-screen="workout"><span class="tab-icon">⏱️</span><span data-i18n="tab_workout">Entreno</span></button>
+    <button class="tab-btn" data-screen="mobility"><span class="tab-icon">🧘</span><span data-i18n="tab_mobility">Movilidad</span></button>
+    <button class="tab-btn" data-screen="progress"><span class="tab-icon">📈</span><span data-i18n="tab_progress">Progreso</span></button>
+    <button class="tab-btn" data-screen="premium"><span class="tab-icon">👑</span><span data-i18n="tab_premium">Premium</span></button>
+    <button class="tab-btn" data-screen="profile"><span class="tab-icon">👤</span><span data-i18n="tab_profile">Perfil</span></button>
   </nav>
 
   <div class="toast-stack" id="toastStack"></div>
 
 </div>
+<script src="i18n.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

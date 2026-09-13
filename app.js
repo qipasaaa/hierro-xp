@@ -93,9 +93,9 @@
   ];
 
   var POSES = [
-    { name: 'Sentadilla profunda', cue: 'Bajá lo más que puedas manteniendo los talones apoyados.' },
-    { name: 'Zancada con giro de torso', cue: 'Zancada al frente y girá el torso hacia la pierna adelantada.' },
-    { name: 'Puente de glúteo unilateral', cue: 'Apoyá un pie, elevá la cadera, sostené 3 segundos por lado.' }
+    { name: 'Sentadilla profunda', cue: 'Baja lo más que puedas manteniendo los talones apoyados.' },
+    { name: 'Zancada con giro de torso', cue: 'Zancada al frente y gira el torso hacia la pierna adelantada.' },
+    { name: 'Puente de glúteo unilateral', cue: 'Apoya un pie, eleva la cadera, sostén 3 segundos por lado.' }
   ];
 
   var BADGES = [
@@ -108,26 +108,26 @@
   ];
 
   var TIPS_SHARED = [
-    'La técnica primero, el peso después — así progresás sin lesionarte.',
+    'La técnica primero, el peso después — así progresas sin lesionarte.',
     'Entre 5 y 10 minutos de calentamiento dinámico pueden reducir a la mitad las lesiones por sobrecarga.',
-    'Tomá agua entre series — el rendimiento baja notoriamente con la deshidratación.',
-    'Si algo duele distinto a "cansancio muscular", paralo. No hay medalla por entrenar lesionado.',
+    'Toma agua entre series — el rendimiento baja notoriamente con la deshidratación.',
+    'Si algo duele distinto a "cansancio muscular", detente. No hay medalla por entrenar lesionado.',
     'Dormir bien es parte del entrenamiento: ahí es cuando el músculo se repara de verdad.',
-    'El estancamiento es normal — variá reps, tempo o descanso antes de asumir que algo falla.'
+    'El estancamiento es normal — varía repeticiones, tempo o descanso antes de asumir que algo falla.'
   ];
   // Investigación: los hombres responden más a desafío/competencia/tracking; las mujeres más a
   // bienestar, curiosidad y vínculo social — y los mensajes centrados en "bajar de peso" bajan
   // la motivación femenina en vez de subirla. Por eso los tres grupos usan marcos distintos,
   // no contenido inventado.
   var TIPS_MASCULINO = [
-    '¿Le podés ganar a tu marca de la semana pasada? Anotá tus series y superate.',
-    'Cada racha es un desafío contra vos mismo. ¿Hasta dónde la vas a estirar?',
+    '¿Puedes superar tu marca de la semana pasada? Anota tus series y supérate.',
+    'Cada racha es un desafío contra ti mismo. ¿Hasta dónde la vas a estirar?',
     'Los hombres se lesionan más seguido entrenando que las mujeres — casi siempre por saltarse el calentamiento o cargar de más muy rápido. Ni se te ocurra.',
-    'Hoy no se trata de ser el más fuerte del gimnasio, sino más fuerte que el de ayer.'
+    'Hoy no se trata de ser el más fuerte del gimnasio, sino más fuerte que ayer.'
   ];
   var TIPS_FEMENINO = [
-    'Levantar pesas no te va a poner "voluminosa" de la nada — te falta testosterona para eso, es fisiológico. Lo que sí vas a ganar es fuerza real.',
-    'El entrenamiento de fuerza no es solo estética: mejora tu ánimo, tu sueño y tu energía del día a día.',
+    'Levantar pesas no te va a poner "voluminosa" de la nada — falta testosterona para eso, es fisiológico. Lo que sí vas a ganar es fuerza real.',
+    'El entrenamiento de fuerza no es solo estética: mejora el ánimo, el sueño y la energía del día a día.',
     'Fortalecer glúteos e isquiotibiales reduce hasta 67% el riesgo de lesión de rodilla, según estudios en atletas mujeres — por eso están en tus rutinas.',
     'Tu cuerpo suele resistir más series antes de fatigarse que el de un hombre promedio, según estudios de fisiología muscular — no le tengas miedo a sumar una serie extra.'
   ];
@@ -141,7 +141,7 @@
     { text: '"¡Yeah buddy! Lightweight, baby!"', author: 'Ronnie Coleman, 8 veces Mr. Olympia' },
     { text: 'Todos quieren ser fisicoculturistas, pero nadie quiere levantar peso de verdad.', author: 'Ronnie Coleman' },
     { text: 'No hay secreto: solo hay que hacerlo.', author: 'Ronnie Coleman' },
-    { text: 'No tenés que ser grandioso. Solo tenés que ser vos mismo.', author: 'Chris Bumstead (CBum), 5 veces Mr. Olympia Classic Physique' },
+    { text: 'No tienes que ser grandioso. Solo tienes que ser tú mismo.', author: 'Chris Bumstead (CBum), 5 veces Mr. Olympia Classic Physique' },
     { text: 'Las últimas tres o cuatro repeticiones son las que hacen crecer el músculo.', author: 'Arnold Schwarzenegger' }
   ];
 
@@ -153,7 +153,7 @@
   }
 
   var defaultState = {
-    name: '', equip: 'mancuernas', experience: 'principiante', visualStyle: 'masculino', ageBracket: '18-29',
+    name: '', equip: 'mancuernas', experience: 'principiante', visualStyle: 'masculino', ageBracket: '18-29', lang: 'es',
     xp: 0, streak: 0, lastWorkoutDay: null,
     badges: [], premium: false, history: {}, onboarded: false, joinedAt: null, checkIn: {},
     cycle: { enabled: false, lastStart: null, length: 28 },
@@ -192,6 +192,55 @@
 
   function levelFromXp(xp) { return Math.floor(xp / 100) + 1; }
   function xpIntoLevel(xp) { return xp % 100; }
+
+  // ---------- i18n ----------
+  function t(key) {
+    var dict = (window.I18N && I18N[state.lang]) || {};
+    if (dict[key] !== undefined) return dict[key];
+    var fallback = (window.I18N && I18N.es) || {};
+    return fallback[key] !== undefined ? fallback[key] : key;
+  }
+  function applyLanguage() {
+    document.documentElement.setAttribute('lang', state.lang);
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      el.innerHTML = t(el.getAttribute('data-i18n'));
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
+      el.setAttribute('placeholder', t(el.getAttribute('data-i18n-placeholder')));
+    });
+    var langName = (window.LANG_NAMES && LANG_NAMES[state.lang]) || state.lang;
+    var openBtn = document.getElementById('langOpenBtn');
+    if (openBtn) openBtn.textContent = '🌐 ' + langName;
+    var profBtn = document.getElementById('profileLangBtn');
+    if (profBtn) profBtn.textContent = '🌐 ' + langName;
+    document.querySelectorAll('#langList button').forEach(function (b) {
+      b.classList.toggle('active', b.getAttribute('data-lang') === state.lang);
+    });
+  }
+  function setLanguage(lang) {
+    if (!window.I18N || !I18N[lang]) return;
+    state.lang = lang;
+    saveState();
+    applyLanguage();
+    if (!document.getElementById('screen-home').hidden) renderHome();
+    if (!document.getElementById('screen-profile').hidden) renderProfile();
+    if (!document.getElementById('screen-workout').hidden && activeRoutine) { renderRest(); renderExerciseList(); }
+    if (!document.getElementById('screen-mobility').hidden) resetMobility();
+    if (!document.getElementById('screen-progress').hidden) renderProgress();
+  }
+  function openLangModal() { document.getElementById('langModal').hidden = false; }
+  function closeLangModal() { document.getElementById('langModal').hidden = true; }
+  document.querySelectorAll('.ob-lang-open').forEach(function (b) { b.addEventListener('click', openLangModal); });
+  document.getElementById('langCloseBtn').addEventListener('click', closeLangModal);
+  document.getElementById('langModal').addEventListener('click', function (e) {
+    if (e.target === this) closeLangModal();
+  });
+  document.getElementById('langList').addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-lang]');
+    if (!btn) return;
+    setLanguage(btn.getAttribute('data-lang'));
+    closeLangModal();
+  });
 
   // ---------- Toasts ----------
   function toast(msg) {
@@ -308,6 +357,51 @@
     document.documentElement.setAttribute('data-visual', v);
   });
 
+  var obStep = 0;
+  var OB_STEP_COUNT = 7;
+  function showObStep(n, animate) {
+    obStep = n;
+    document.querySelectorAll('.onboard-step').forEach(function (el) {
+      var stepNum = parseInt(el.getAttribute('data-step'), 10);
+      el.hidden = stepNum !== n;
+      el.classList.remove('entering');
+      if (stepNum === n && animate !== false) {
+        void el.offsetWidth;
+        el.classList.add('entering');
+      }
+    });
+    document.querySelectorAll('#onboardProgress .dot').forEach(function (dot) {
+      var stepNum = parseInt(dot.getAttribute('data-step'), 10);
+      dot.classList.toggle('active', stepNum === n);
+      dot.classList.toggle('done', stepNum < n);
+    });
+    if (n === 6) buildObSummary();
+    if (n === 1) document.getElementById('nameInput').focus();
+  }
+  function buildObSummary() {
+    var name = document.getElementById('nameInput').value.trim() || 'Atleta';
+    var equipLabel = state.equip === 'mancuernas' ? t('equip_dumbbells') : t('equip_none');
+    var expLabel = state.experience === 'principiante' ? t('exp_beginner') : (state.experience === 'intermedio' ? t('exp_intermediate') : t('exp_advanced'));
+    var summary = t('greeting') + name + '! ' + equipLabel + ' · ' + expLabel + ' · ' + state.ageBracket;
+    document.getElementById('obSummaryText').textContent = summary;
+  }
+  document.getElementById('onboardSteps').addEventListener('click', function (e) {
+    var nextBtn = e.target.closest('.ob-next');
+    var backBtn = e.target.closest('.ob-back');
+    if (nextBtn) {
+      if (obStep === 1) {
+        var nameVal = document.getElementById('nameInput').value.trim();
+        if (!nameVal) { toast(t('ob_name_title')); return; }
+      }
+      if (obStep < OB_STEP_COUNT - 1) showObStep(obStep + 1);
+    } else if (backBtn) {
+      if (obStep > 0) showObStep(obStep - 1);
+    }
+  });
+  document.getElementById('nameInput').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') document.getElementById('nameNextBtn').click();
+  });
+
   document.getElementById('startBtn').addEventListener('click', function () {
     var nameVal = document.getElementById('nameInput').value.trim();
     state.name = nameVal || 'Atleta';
@@ -341,10 +435,10 @@
     var msg = '';
     if (energy === 'bajo') msg = 'Día de energía baja: bastaría con el Calentamiento o una rutina suave, pocas series.';
     else if (energy === 'medio') msg = 'Energía media: una rutina normal te va a sentar bien hoy.';
-    else msg = 'Energía alta: buen día para ir a fondo — animate con una rutina más exigente.';
+    else msg = 'Energía alta: buen día para ir a fondo — anímate con una rutina más exigente.';
     if (mood === 'cansado') msg += ' Si el cuerpo pide descanso, un Calentamiento igual cuenta como avance.';
     if (mood === 'estresado') msg += ' Entrenar aunque sea un poco ayuda a bajar el estrés.';
-    if (mood === 'motivado' && energy === 'alto') msg += ' 🔥 Buen momento para el Jefe Semanal si lo tenés desbloqueado.';
+    if (mood === 'motivado' && energy === 'alto') msg += ' 🔥 Buen momento para el Jefe Semanal si lo tienes desbloqueado.';
     return msg;
   }
 
@@ -366,7 +460,7 @@
   wireChipGroup('energyChoice', function (v) { pickedEnergy = v; });
   wireChipGroup('moodChoice', function (v) { pickedMood = v; });
   document.getElementById('saveCheckinBtn').addEventListener('click', function () {
-    if (!pickedEnergy || !pickedMood) { toast('Elegí energía y ánimo primero.'); return; }
+    if (!pickedEnergy || !pickedMood) { toast('Elige energía y ánimo primero.'); return; }
     state.checkIn[todayKey()] = { energy: pickedEnergy, mood: pickedMood };
     saveState();
     renderCheckin();
@@ -374,7 +468,7 @@
   });
 
   function renderHome() {
-    document.getElementById('homeGreeting').textContent = 'Hola, ' + state.name;
+    document.getElementById('homeGreeting').textContent = t('greeting') + state.name;
     var lvl = levelFromXp(state.xp);
     var into = xpIntoLevel(state.xp);
     document.getElementById('xpText').textContent = into + ' / 100 XP';
@@ -405,7 +499,7 @@
         ? ' Después de la menopausia la densidad ósea baja más rápido — el entrenamiento de fuerza es una de las formas más efectivas de cuidarla.'
         : '';
       ageTip.hidden = false;
-      ageTip.textContent = '⚖️ A partir de los 50, el equilibrio y la salud ósea importan tanto como la fuerza. Priorizá el calentamiento y no te saltees "Rodillas Fuertes" — ayuda a prevenir caídas.' + boneNote;
+      ageTip.textContent = '⚖️ A partir de los 50, el equilibrio y la salud ósea importan tanto como la fuerza. Prioriza el calentamiento y no te saltes "Rodillas Fuertes" — ayuda a prevenir caídas.' + boneNote;
     } else {
       ageTip.hidden = true;
     }
@@ -414,7 +508,7 @@
     if (state.experience === 'principiante' && state.xp < 50) {
       var easy = easiestRoutineFor(state.equip);
       tipEl.hidden = false;
-      tipEl.textContent = '👋 Como recién empezás: probá primero el "Calentamiento" y después "' + (easy ? easy.name : 'una rutina suave') + '" con pocas series. La constancia importa más que la intensidad.';
+      tipEl.textContent = '👋 Como recién empiezas: prueba primero el "Calentamiento" y después "' + (easy ? easy.name : 'una rutina suave') + '" con pocas series. La constancia importa más que la intensidad.';
     } else {
       tipEl.hidden = true;
     }
@@ -433,7 +527,7 @@
           '<span class="routine-focus">' + r.focus + '</span>' +
         '</div>' +
         '<span class="routine-badge ' + (locked ? 'locked' : (r.boss ? 'boss' : (r.warmup ? 'warmup' : 'go'))) + '">' +
-          (locked ? 'Premium' : (r.boss ? 'Jefe' : (r.warmup ? 'Calentar' : 'Empezar'))) +
+          (locked ? t('routine_locked') : (r.boss ? t('routine_boss') : (r.warmup ? t('routine_warmup') : t('routine_start')))) +
         '</span>';
       card.addEventListener('click', function () {
         if (locked) { showScreen('premium'); return; }
@@ -569,8 +663,8 @@
     restRunning = false;
     restRemainingMs = restTotalMs;
     document.getElementById('ringFill').classList.remove('done');
-    document.getElementById('restLabel').textContent = 'DESCANSO LISTO';
-    document.getElementById('restToggle').textContent = 'Iniciar descanso';
+    document.getElementById('restLabel').textContent = t('rest_label_ready');
+    document.getElementById('restToggle').textContent = t('rest_start');
     renderRest();
   }
   function restTick() {
@@ -580,11 +674,11 @@
       restRunning = false;
       restRemainingMs = 0;
       document.getElementById('ringFill').classList.add('done');
-      document.getElementById('restLabel').textContent = '¡A LA SIGUIENTE SERIE!';
-      document.getElementById('restToggle').textContent = 'Iniciar descanso';
+      document.getElementById('restLabel').textContent = t('rest_label_next');
+      document.getElementById('restToggle').textContent = t('rest_start');
       if (navigator.vibrate) { try { navigator.vibrate([200, 80, 200]); } catch (e) {} }
       restCyclesThisSession += 1;
-      if (restCyclesThisSession % 3 === 0) toast('💧 Pausa: tomá agua antes de seguir.');
+      if (restCyclesThisSession % 3 === 0) toast('💧 ' + (state.lang === 'en' ? 'Break: drink water before continuing.' : 'Pausa: toma agua antes de seguir.'));
     }
     renderRest();
   }
@@ -593,15 +687,15 @@
       clearInterval(restInterval);
       restRunning = false;
       restRemainingMs = Math.max(0, restEndTime - Date.now());
-      this.textContent = 'Reanudar';
+      this.textContent = t('rest_resume');
     } else {
       if (restRemainingMs <= 0) restRemainingMs = restTotalMs;
       restEndTime = Date.now() + restRemainingMs;
       restRunning = true;
       restInterval = setInterval(restTick, 200);
-      document.getElementById('restLabel').textContent = 'DESCANSANDO';
+      document.getElementById('restLabel').textContent = t('rest_label_resting');
       document.getElementById('ringFill').classList.remove('done');
-      this.textContent = 'Pausar';
+      this.textContent = t('rest_pause');
     }
   });
   document.getElementById('restMinus').addEventListener('click', function () {
@@ -641,7 +735,11 @@
       document.getElementById('hrConnectBtn').textContent = 'Conectado ✓';
       toast('⌚ Smartwatch conectado');
     } catch (e) {
-      toast('No se pudo conectar el smartwatch.');
+      if (e && e.name === 'NotFoundError') {
+        toast('No se encontró ningún reloj compatible. Si es Xiaomi/Mi Band, no funciona: Xiaomi bloquea ese dato para apps externas.');
+      } else {
+        toast('No se pudo conectar el smartwatch.');
+      }
     }
   }
   document.getElementById('hrConnectBtn').addEventListener('click', connectHR);
@@ -680,7 +778,7 @@
   }
   document.getElementById('checkMobilityBtn').addEventListener('click', function () {
     var answered = Object.keys(poseAnswers).length;
-    if (answered < POSES.length) { toast('Marcá las ' + POSES.length + ' posturas primero.'); return; }
+    if (answered < POSES.length) { toast('Marca las ' + POSES.length + ' posturas primero.'); return; }
     var badCount = Object.values(poseAnswers).filter(function (v) { return v === 'bad'; }).length;
     var result = document.getElementById('mobilityResult');
     if (badCount >= 2) {
@@ -745,7 +843,8 @@
     document.getElementById('avatarCircle').textContent = initials(state.name);
     document.getElementById('profileName').textContent = state.name;
     var joined = state.joinedAt ? new Date(state.joinedAt) : new Date();
-    document.getElementById('profileMeta').textContent = 'Miembro desde ' + joined.toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric' });
+    var localeMap = { es: 'es-CL', en: 'en-US', fr: 'fr-FR', it: 'it-IT', pt: 'pt-BR', zh: 'zh-CN', ja: 'ja-JP', ko: 'ko-KR' };
+    document.getElementById('profileMeta').textContent = t('member_since') + joined.toLocaleDateString(localeMap[state.lang] || 'es-CL', { day: 'numeric', month: 'short', year: 'numeric' });
     document.getElementById('profXp').textContent = state.xp;
     document.getElementById('profLevel').textContent = levelFromXp(state.xp);
     document.getElementById('profStreak').textContent = state.streak;
@@ -756,6 +855,7 @@
     setActiveChip('profEquipChoice', state.equip);
     setActiveChip('profExpChoice', state.experience);
     setActiveChip('profVisualChoice', state.visualStyle);
+    document.getElementById('cycleCard').hidden = (state.visualStyle === 'masculino');
     renderCycleSection();
   }
   function setActiveChip(containerId, val) {
@@ -769,6 +869,7 @@
   wireChipGroup('profVisualChoice', function (v) {
     state.visualStyle = v;
     document.documentElement.setAttribute('data-visual', v);
+    document.getElementById('cycleCard').hidden = (v === 'masculino');
   });
   document.getElementById('saveProfileBtn').addEventListener('click', function () {
     var n = document.getElementById('profNameInput').value.trim();
@@ -812,7 +913,7 @@
   document.getElementById('saveCycleBtn').addEventListener('click', function () {
     var dateVal = document.getElementById('cycleStartInput').value;
     var lenVal = parseInt(document.getElementById('cycleLengthInput').value, 10);
-    if (!dateVal) { toast('Elegí una fecha primero.'); return; }
+    if (!dateVal) { toast('Elige una fecha primero.'); return; }
     state.cycle.lastStart = dateVal;
     state.cycle.length = (lenVal >= 15 && lenVal <= 45) ? lenVal : 28;
     saveState();
@@ -821,7 +922,7 @@
   });
 
   document.getElementById('resetProgressBtn').addEventListener('click', function () {
-    if (!confirm('¿Seguro que querés borrar todo tu progreso? No se puede deshacer.')) return;
+    if (!confirm('¿Seguro que quieres borrar todo tu progreso? No se puede deshacer.')) return;
     var keepVisual = state.visualStyle;
     state = Object.assign({}, defaultState);
     state.visualStyle = keepVisual;
@@ -830,6 +931,7 @@
     document.getElementById('topbar').hidden = true;
     document.getElementById('tabbar').hidden = true;
     document.getElementById('nameInput').value = '';
+    showObStep(0, false);
   });
 
   // ---------- Tab bar ----------
@@ -841,6 +943,8 @@
 
   // ---------- Boot ----------
   document.documentElement.setAttribute('data-visual', state.visualStyle);
+  applyLanguage();
+  showObStep(0, false);
   if (state.onboarded) {
     document.getElementById('nameInput').value = state.name;
     enterApp();
