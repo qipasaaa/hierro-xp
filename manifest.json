@@ -1,0 +1,14 @@
+{
+  "name": "Hierro XP",
+  "short_name": "Hierro XP",
+  "description": "Entrená en casa con mancuernas, ganá XP y subí de nivel.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f3ec",
+  "theme_color": "#c9302c",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

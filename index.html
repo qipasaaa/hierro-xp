@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hierro XP</title>
+<meta name="description" content="Entrená en casa, con o sin equipo, ganá XP y subí de nivel — con calentamiento guiado y check-in diario.">
+<meta name="theme-color" content="#c9302c">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-anim" aria-hidden="true"><span></span><span></span><span></span></div>
+<div class="app">
+
+  <!-- ONBOARDING -->
+  <section class="screen onboard" id="screen-onboard">
+    <div class="onboard-eyebrow">Hierro XP</div>
+    <h1>Entrená donde estés.<br>Subí de nivel.</h1>
+    <p>Con mancuernas o sin nada de equipo. Calentamiento guiado para no lesionarte, rutinas para cualquier nivel, y un check-in diario para que la app se adapte a cómo estás.</p>
+
+    <div class="field">
+      <label for="nameInput">¿Cómo te llamamos?</label>
+      <input type="text" id="nameInput" placeholder="Tu nombre" maxlength="20" autocomplete="given-name">
+    </div>
+
+    <div class="field">
+      <label>Equipo disponible</label>
+      <div class="chip-choice" id="equipChoice">
+        <button type="button" data-val="mancuernas" class="active">Mancuernas</button>
+        <button type="button" data-val="bodyweight">Sin equipo / bandas</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>¿En qué rango de edad estás?</label>
+      <div class="chip-choice" id="ageChoice">
+        <button type="button" data-val="18-29" class="active">18 a 29</button>
+        <button type="button" data-val="30-49">30 a 49</button>
+        <button type="button" data-val="50+">50 o más</button>
+      </div>
+      <p class="field-hint">Hierro XP es para mayores de 18 años.</p>
+    </div>
+
+    <div class="field">
+      <label>¿Cuál es tu experiencia entrenando?</label>
+      <p class="field-hint">Si no sabés por dónde empezar, elegí Principiante — no pasa nada.</p>
+      <div class="chip-choice" id="expChoice">
+        <button type="button" data-val="principiante" class="active">Recién empiezo</button>
+        <button type="button" data-val="intermedio">Ya entreno hace rato</button>
+        <button type="button" data-val="avanzado">Avanzado</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Estilo visual de la app</label>
+      <div class="chip-choice" id="visualChoice">
+        <button type="button" data-val="masculino" class="active">Hombre</button>
+        <button type="button" data-val="femenino">Mujer</button>
+        <button type="button" data-val="neutral">Prefiero no decir</button>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="startBtn">Empezar</button>
+  </section>
+
+  <!-- TOP BAR (shown after onboarding) -->
+  <div class="topbar" id="topbar" hidden>
+    <div class="brand">HIERRO <span>XP</span></div>
+    <div class="level-chip" id="levelChip">⚡ Nv. 1</div>
+  </div>
+
+  <!-- HOME -->
+  <section class="screen" id="screen-home" hidden>
+    <h2 class="section-title" id="homeGreeting">Hola</h2>
+    <p class="section-sub" id="homeSub">Elegí tu rutina de hoy.</p>
+
+    <div class="tip-banner" id="dailyTipCard"></div>
+    <div class="tip-banner" id="beginnerTip" hidden></div>
+    <div class="tip-banner" id="kneeTip" hidden></div>
+    <div class="tip-banner" id="ageTip" hidden></div>
+
+    <!-- Check-in (shown once per day) -->
+    <div class="checkin-card" id="checkinCard" hidden>
+      <span class="checkin-title">¿Cómo te sentís hoy?</span>
+      <div class="checkin-row">
+        <span class="field-label">Energía física</span>
+        <div class="chip-choice" id="energyChoice">
+          <button type="button" data-val="bajo">Baja</button>
+          <button type="button" data-val="medio">Media</button>
+          <button type="button" data-val="alto">Alta</button>
+        </div>
+      </div>
+      <div class="checkin-row">
+        <span class="field-label">Estado de ánimo</span>
+        <div class="chip-choice" id="moodChoice">
+          <button type="button" data-val="motivado">Motivado/a</button>
+          <button type="button" data-val="bien">Bien</button>
+          <button type="button" data-val="cansado">Cansado/a</button>
+          <button type="button" data-val="estresado">Estresado/a</button>
+        </div>
+      </div>
+      <button class="btn-primary" id="saveCheckinBtn">Guardar</button>
+    </div>
+    <div class="checkin-adapt" id="checkinAdapt" hidden></div>
+
+    <div class="quote-card" id="quoteCard"></div>
+
+    <div class="water-card">
+      <div class="water-row">
+        <span class="xp-label">💧 Agua de hoy</span>
+        <span class="xp-value" id="waterText">0 / 8 vasos</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill water-fill" id="waterBarFill" style="width:0%"></div></div>
+      <button class="btn-ghost" id="waterAddBtn" style="align-self:flex-start">+1 vaso</button>
+    </div>
+
+    <div class="xp-card">
+      <div class="xp-row">
+        <span class="xp-label">Progreso de nivel</span>
+        <span class="xp-value" id="xpText">0 / 100 XP</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill" id="xpBarFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-tile" id="streakTile"><span class="stat-num flame" id="streakNum">0</span><span class="stat-cap">Racha</span></div>
+      <div class="stat-tile"><span class="stat-num xp-color" id="levelNum">1</span><span class="stat-cap">Nivel</span></div>
+      <div class="stat-tile"><span class="stat-num gold-color" id="badgeNum">0</span><span class="stat-cap">Medallas</span></div>
+    </div>
+
+    <h3 class="section-title" style="font-size:17px">Rutinas</h3>
+    <div class="routine-list" id="routineList"></div>
+  </section>
+
+  <!-- WORKOUT -->
+  <section class="screen" id="screen-workout" hidden>
+    <h2 class="section-title" id="workoutTitle">Rutina</h2>
+    <p class="section-sub" id="workoutFocus"></p>
+
+    <div class="hr-widget" id="hrWidget">
+      <span id="hrReading">❤️ -- BPM</span>
+      <button class="btn-ghost" id="hrConnectBtn">Conectar smartwatch</button>
+    </div>
+
+    <div class="ring-wrap">
+      <svg class="ring" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:var(--accent)"/>
+            <stop offset="100%" style="stop-color:var(--xp)"/>
+          </linearGradient>
+        </defs>
+        <circle class="ring-track" cx="100" cy="100" r="86"></circle>
+        <circle class="ring-fill" id="ringFill" cx="100" cy="100" r="86" stroke-dasharray="540.3" stroke-dashoffset="0"></circle>
+      </svg>
+      <div class="readout">
+        <div class="time" id="restTime">1:30</div>
+        <div class="rest-label" id="restLabel">DESCANSO LISTO</div>
+      </div>
+    </div>
+    <div class="rest-controls">
+      <button class="btn-ghost" id="restMinus">−15s</button>
+      <button class="btn-primary" id="restToggle" style="padding:11px 22px;">Iniciar descanso</button>
+      <button class="btn-ghost" id="restPlus">+15s</button>
+    </div>
+    <p class="disclaimer" style="text-align:center">💧 Acordate de tomar agua entre series.</p>
+
+    <div class="exercise-list" id="exerciseList"></div>
+
+    <button class="btn-primary" id="finishRoutineBtn">Terminar rutina</button>
+    <button class="btn-ghost" id="backHomeBtn">← Volver al inicio</button>
+  </section>
+
+  <!-- MOBILITY -->
+  <section class="screen" id="screen-mobility" hidden>
+    <h2 class="section-title">Chequeo de movilidad</h2>
+    <p class="section-sub">Probá cada postura y marcá si sentís molestia o tensión desigual entre lados. No es un diagnóstico médico — es una guía para saber dónde estirar más.</p>
+    <div id="poseList"></div>
+    <button class="btn-primary" id="checkMobilityBtn">Ver resultado</button>
+    <div class="result-card" id="mobilityResult" hidden></div>
+    <p class="disclaimer">Si el dolor es fuerte o persiste, consultá con un kinesiólogo o profesional de salud.</p>
+  </section>
+
+  <!-- PROGRESS -->
+  <section class="screen" id="screen-progress" hidden>
+    <h2 class="section-title">Tu progreso</h2>
+    <div class="xp-card">
+      <div class="xp-row"><span class="xp-label">XP los últimos 7 días</span></div>
+      <div class="chart" id="xpChart"></div>
+      <div class="chart-labels" id="xpChartLabels"></div>
+    </div>
+    <h3 class="section-title" style="font-size:17px">Medallas</h3>
+    <div class="badge-grid" id="badgeGrid"></div>
+  </section>
+
+  <!-- PREMIUM -->
+  <section class="screen" id="screen-premium" hidden>
+    <h2 class="section-title">Hierro XP Premium</h2>
+    <p class="section-sub">Desbloqueá todas las rutinas, chequeos ilimitados y el Jefe Semanal.</p>
+
+    <div class="why-premium">
+      <div class="why-item"><span class="why-icon">🎯</span><span>Progresión guiada para no estancarte — el problema #1 de entrenar solo, según todos los estudios que revisamos.</span></div>
+      <div class="why-item"><span class="why-icon">🧩</span><span>Rutinas ilimitadas de calistenia y mancuernas, para no aburrirte entrenando siempre lo mismo.</span></div>
+      <div class="why-item"><span class="why-icon">🩹</span><span>Chequeos de movilidad sin límite — la mejor forma de anticipar lesiones antes de que aparezcan.</span></div>
+      <div class="why-item"><span class="why-icon">👑</span><span>Jefe Semanal y modo avanzado, para cuando ya no te alcanza con lo básico.</span></div>
+    </div>
+
+    <div class="plan-card featured">
+      <div class="plan-head"><span class="plan-name">Anual</span><span class="plan-price">$29.990 CLP/año</span></div>
+      <ul class="feature-list">
+        <li>Equivale a $2.499/mes — ahorrás 50%</li>
+        <li>Todas las rutinas, sin límite</li>
+        <li>Chequeos de movilidad ilimitados</li>
+        <li>Jefe Semanal desbloqueado</li>
+        <li>Sin anuncios</li>
+      </ul>
+      <button class="btn-primary" id="premiumYearBtn">Ver plan anual</button>
+    </div>
+
+    <div class="plan-card">
+      <div class="plan-head"><span class="plan-name">Mensual</span><span class="plan-price">$4.990 CLP/mes</span></div>
+      <ul class="feature-list">
+        <li>Todas las rutinas, sin límite</li>
+        <li>Chequeos de movilidad ilimitados</li>
+        <li>Jefe Semanal desbloqueado</li>
+        <li class="no">Precio mensual completo</li>
+      </ul>
+      <button class="btn-ghost" id="premiumMonthBtn">Ver plan mensual</button>
+    </div>
+
+    <div class="note-box" id="premiumNote">Los pagos se procesan por Google Play Billing una vez publicada la app — todavía no hay cobro real activo en esta versión de prueba.</div>
+  </section>
+
+  <!-- PROFILE -->
+  <section class="screen" id="screen-profile" hidden>
+    <div class="profile-header">
+      <div class="avatar-circle" id="avatarCircle">A</div>
+      <div>
+        <div class="profile-name" id="profileName">Atleta</div>
+        <div class="profile-meta" id="profileMeta">Miembro desde —</div>
+      </div>
+    </div>
+
+    <div class="xp-card">
+      <div class="stat-row" style="grid-template-columns:repeat(4,1fr)">
+        <div class="stat-tile"><span class="stat-num" id="profXp">0</span><span class="stat-cap">XP total</span></div>
+        <div class="stat-tile"><span class="stat-num xp-color" id="profLevel">1</span><span class="stat-cap">Nivel</span></div>
+        <div class="stat-tile"><span class="stat-num flame" id="profStreak">0</span><span class="stat-cap">Racha</span></div>
+        <div class="stat-tile"><span class="stat-num gold-color" id="profBadges">0</span><span class="stat-cap">Medallas</span></div>
+      </div>
+    </div>
+
+    <div class="edit-card">
+      <div class="edit-block">
+        <span class="field-label">Nombre</span>
+        <input type="text" id="profNameInput" class="field" style="font-family:var(--font-body);font-size:15px;padding:11px 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface-2);color:var(--text)" maxlength="20">
+      </div>
+      <div class="edit-block">
+        <span class="field-label">Rango de edad</span>
+        <div class="chip-choice" id="profAgeChoice">
+          <button type="button" data-val="18-29">18 a 29</button>
+          <button type="button" data-val="30-49">30 a 49</button>
+          <button type="button" data-val="50+">50 o más</button>
+        </div>
+      </div>
+      <div class="edit-block">
+        <span class="field-label">Equipo disponible</span>
+        <div class="chip-choice" id="profEquipChoice">
+          <button type="button" data-val="mancuernas">Mancuernas</button>
+          <button type="button" data-val="bodyweight">Sin equipo / bandas</button>
+        </div>
+      </div>
+      <div class="edit-block">
+        <span class="field-label">Experiencia</span>
+        <div class="chip-choice" id="profExpChoice">
+          <button type="button" data-val="principiante">Recién empiezo</button>
+          <button type="button" data-val="intermedio">Hace rato</button>
+          <button type="button" data-val="avanzado">Avanzado</button>
+        </div>
+      </div>
+      <div class="edit-block">
+        <span class="field-label">Estilo visual</span>
+        <div class="chip-choice" id="profVisualChoice">
+          <button type="button" data-val="masculino">Hombre</button>
+          <button type="button" data-val="femenino">Mujer</button>
+          <button type="button" data-val="neutral">Prefiero no decir</button>
+        </div>
+      </div>
+      <button class="btn-primary" id="saveProfileBtn">Guardar cambios</button>
+    </div>
+
+    <div class="edit-card">
+      <div class="edit-block">
+        <span class="field-label">Registro de ciclo (opcional)</span>
+        <p class="field-hint">100% privado: se guarda solo en este teléfono. Hierro XP no tiene servidor, así que esta información nunca se sube ni se comparte a ningún lado. No cambia tus rutinas automáticamente — la ciencia sobre el efecto del ciclo en el rendimiento todavía no es concluyente. Es solo para tu propio registro, si te sirve.</p>
+        <div class="chip-choice" id="cycleToggle">
+          <button type="button" data-val="off" class="active">Desactivado</button>
+          <button type="button" data-val="on">Activar</button>
+        </div>
+      </div>
+      <div id="cycleFields" hidden>
+        <div class="edit-block">
+          <span class="field-label">Fecha de inicio del último período</span>
+          <input type="date" id="cycleStartInput" style="font-family:var(--font-body);font-size:15px;padding:11px 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface-2);color:var(--text)">
+        </div>
+        <div class="edit-block">
+          <span class="field-label">Duración típica del ciclo (días)</span>
+          <input type="text" inputmode="numeric" id="cycleLengthInput" value="28" style="font-family:var(--font-body);font-size:15px;padding:11px 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);max-width:100px">
+        </div>
+        <button class="btn-primary" id="saveCycleBtn" style="margin-top:12px">Guardar registro</button>
+        <div class="checkin-adapt" id="cycleResult" style="margin-top:12px" hidden></div>
+      </div>
+    </div>
+
+    <button class="btn-danger" id="resetProgressBtn">Reiniciar todo mi progreso</button>
+  </section>
+
+  <!-- TAB BAR -->
+  <nav class="tabbar" id="tabbar" hidden>
+    <button class="tab-btn active" data-screen="home"><span class="tab-icon">🏠</span>Inicio</button>
+    <button class="tab-btn" data-screen="workout"><span class="tab-icon">⏱️</span>Entreno</button>
+    <button class="tab-btn" data-screen="mobility"><span class="tab-icon">🧘</span>Movilidad</button>
+    <button class="tab-btn" data-screen="progress"><span class="tab-icon">📈</span>Progreso</button>
+    <button class="tab-btn" data-screen="premium"><span class="tab-icon">👑</span>Premium</button>
+    <button class="tab-btn" data-screen="profile"><span class="tab-icon">👤</span>Perfil</button>
+  </nav>
+
+  <div class="toast-stack" id="toastStack"></div>
+
+</div>
+<script src="app.js"></script>
+</body>
+</html>
